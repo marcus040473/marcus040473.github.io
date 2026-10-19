@@ -1,0 +1,70 @@
+name: Layerling-Webseite
+
+# Baut Layerling aus marcus040473/layerling (Zweig "marcus") als statische
+# Fassung und stellt sie unter https://marcus040473.github.io bereit.
+# Läuft von Hand (Actions -> Layerling-Webseite -> Run workflow), bei jeder
+# Änderung in diesem Repo und einmal in der Nacht.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "23 2 * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Bauen
+    runs-on: ubuntu-latest
+    steps:
+      - name: Layerling holen (Zweig marcus)
+        uses: actions/checkout@v7
+        with:
+          repository: marcus040473/layerling
+          ref: marcus
+
+      - name: Node einrichten
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Statische Fassung bauen
+        run: npm run export
+        env:
+          # Der Link "auf GitHub" unten auf der Seite zeigt auf den Quellcode
+          # dieser Fassung (AGPL-3.0: wer eine veränderte Fassung im Netz
+          # betreibt, bietet ihren Quellcode an).
+          NEXT_PUBLIC_SOURCE_CODE_URL: https://github.com/marcus040473/layerling
+
+      - name: Pages vorbereiten
+        uses: actions/configure-pages@v6
+
+      - name: Seite hochladen
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: apps/web/.next-export
+
+  deploy:
+    name: Veröffentlichen
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Auf GitHub Pages stellen
+        id: deployment
+        uses: actions/deploy-pages@v5
