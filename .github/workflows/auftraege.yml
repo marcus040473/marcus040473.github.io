@@ -1,0 +1,41 @@
+name: Layerling-Aufträge
+
+# Sucht jede Nacht in den Discussions von henmedia/layerling nach Stellen, an denen
+# @marcus040473 um etwas gebeten wird und noch nicht geantwortet hat, und hält sie
+# in einem Issue "Layerling: offene Aufträge" in diesem Repo fest.
+# Von Hand: Actions -> Layerling-Aufträge -> Run workflow.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sammeln:
+    name: Aufträge sammeln
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.UPSTREAM_TOKEN || secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Discussions auswerten
+        run: python3 .github/scripts/mentions.py > auftraege.md
+
+      - name: Issue anlegen oder aktualisieren
+        env:
+          ISSUE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export GH_TOKEN="$ISSUE_TOKEN"
+          title="Layerling: offene Aufträge"
+          number=$(gh issue list --state open --search "\"$title\" in:title" --json number,title --jq ".[] | select(.title==\"$title\") | .number" | head -n1)
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file auftraege.md
+          else
+            gh issue create --title "$title" --body-file auftraege.md
+          fi
