@@ -37,6 +37,29 @@ jobs:
           repository: marcus040473/layerling_msto
           ref: claude/hopeful-dirac-sj8lu3
 
+      # Teständerungen: jede Datei in testaenderungen/ dieses Repos ist eine
+      # Änderung, die noch nicht bei Stefan ist, aber hier schon ausprobiert
+      # werden soll (z. B. 1917-gridfinity-groesse.patch). Passt eine nicht
+      # mehr, wird sie übersprungen und unter Actions als Warnung gezeigt;
+      # die Seite wird trotzdem gebaut. Ausbauen: die Datei löschen.
+      - name: Teständerungen holen
+        uses: actions/checkout@v7
+        with:
+          path: .seite
+
+      - name: Teständerungen dazunehmen
+        run: |
+          shopt -s nullglob
+          for patch in .seite/testaenderungen/*.patch; do
+            if git -c user.name="Layerling-Webseite" -c user.email="actions@github.com" am --3way "$patch"; then
+              echo "Dazugenommen: $(basename "$patch")"
+            else
+              git am --abort || true
+              echo "::warning::Teständerung passt nicht mehr und wurde übersprungen: $(basename "$patch")"
+            fi
+          done
+          rm -rf .seite
+
       - name: Node einrichten
         uses: actions/setup-node@v7
         with:

@@ -18,3 +18,16 @@ Dieses Repo enthält nur den Bauauftrag
 den Zweig `marcus`, baut die statische Fassung (`npm run export`) und stellt
 sie auf GitHub Pages. Er läuft bei jeder Änderung hier, einmal in der Nacht
 und von Hand unter **Actions → Layerling-Webseite → Run workflow**.
+
+## Teständerungen
+
+Änderungen, die noch nicht bei Stefan sind, liegen als Datei im Ordner
+[`testaenderungen/`](testaenderungen/) und werden beim Bauen dazugenommen –
+so lassen sie sich hier schon ausprobieren. Zurzeit:
+
+- `1917-gridfinity-groesse.patch` – Gridfinity-Behälter und -Tabletts so groß,
+  wie das gewählte Druckbett reicht (Discussion #1917; Zweig
+  `gridfinity-larger-boxes-1917` in marcus040473/layerling).
+
+Ausbauen: die Datei löschen. Passt eine Datei nicht mehr, wird sie übersprungen
+(Warnung unter Actions), die Seite wird trotzdem gebaut.
