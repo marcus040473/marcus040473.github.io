@@ -6,7 +6,7 @@ Unter **https://marcus040473.github.io** läuft eine Fassung von
 Rändel, Waben und Noppen auf jedem Körper, mit Masken und nachträglich
 änderbar.
 
-- **Quellcode dieser Fassung:** zurzeit [marcus040473/layerling_msto, Zweig `claude/hopeful-dirac-sj8lu3`](https://github.com/marcus040473/layerling_msto/tree/claude/hopeful-dirac-sj8lu3) (Arbeitszweig, bis er in [marcus040473/layerling, Zweig `marcus`](https://github.com/marcus040473/layerling/tree/marcus) zusammengeführt ist)
+- **Quellcode dieser Fassung:** [marcus040473/layerling, Zweig `marcus`](https://github.com/marcus040473/layerling/tree/marcus)
 - **Lizenz:** Layerling steht unter der AGPL-3.0; diese Fassung ebenso.
 - **Entwürfe** werden im eigenen Browser gespeichert, nicht auf dieser Seite.
   Zum Sichern im Export-Fenster als `.lyl`-Entwurf speichern (danach Strg+S).

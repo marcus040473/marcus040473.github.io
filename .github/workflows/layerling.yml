@@ -1,7 +1,7 @@
 name: Layerling-Webseite
 
-# Baut Layerling (zurzeit aus marcus040473/layerling_msto, Zweig
-# "claude/hopeful-dirac-sj8lu3", sonst marcus040473/layerling, Zweig "marcus") als statische
+# Baut Layerling aus marcus040473/layerling, Zweig "marcus" (Marcus' Stand auf
+# Stefans neuester Version, mit dem Vasen-Designer), als statische
 # Fassung und stellt sie unter https://marcus040473.github.io bereit.
 # Läuft von Hand (Actions -> Layerling-Webseite -> Run workflow), bei jeder
 # Änderung in diesem Repo und einmal in der Nacht.
@@ -27,15 +27,11 @@ jobs:
     name: Bauen
     runs-on: ubuntu-latest
     steps:
-      # Vorübergehend: der Arbeitszweig aus layerling_msto (marcus + Stefans
-      # 1.166.0 + Vasen-Designer mit Bild/Text und neuen Mustern), bis er in
-      # marcus040473/layerling, Zweig marcus, zusammengeführt ist. Zurück
-      # geht es mit: repository marcus040473/layerling, ref marcus.
-      - name: Layerling holen (Arbeitszweig aus layerling_msto)
+      - name: Layerling holen (Zweig marcus)
         uses: actions/checkout@v7
         with:
-          repository: marcus040473/layerling_msto
-          ref: claude/hopeful-dirac-sj8lu3
+          repository: marcus040473/layerling
+          ref: marcus
 
       # Teständerungen: jede Datei in testaenderungen/ dieses Repos ist eine
       # Änderung, die noch nicht bei Stefan ist, aber hier schon ausprobiert
@@ -75,7 +71,7 @@ jobs:
           # Der Link "auf GitHub" unten auf der Seite zeigt auf den Quellcode
           # dieser Fassung (AGPL-3.0: wer eine veränderte Fassung im Netz
           # betreibt, bietet ihren Quellcode an).
-          NEXT_PUBLIC_SOURCE_CODE_URL: https://github.com/marcus040473/layerling_msto/tree/claude/hopeful-dirac-sj8lu3
+          NEXT_PUBLIC_SOURCE_CODE_URL: https://github.com/marcus040473/layerling/tree/marcus
 
       - name: Pages vorbereiten
         uses: actions/configure-pages@v6
